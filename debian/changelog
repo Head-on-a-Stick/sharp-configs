@@ -1,3 +1,9 @@
+sharp-configs (10.7.0) unstable; urgency=medium
+
+  * version bump for new Debian buster point release 
+
+ -- Matthew T Hoare <matthew.t.hoare@gmail.com>  Sun, 06 Dec 2020 12:39:56 +0000
+
 sharp-configs (10.6.0) unstable; urgency=medium
 
   * version bump for new Debian buster point release
