@@ -4,7 +4,7 @@
 # sharp-user-setup: a script to populate a new user's HOME directory    #
 # using template files from /usr/share/sharpbang/skel/                  #
 # Copyright: 2015-2017 John Crawley <john@bunsenlabs.org>               #
-# Copyright: 2020 Matthew T Hoare <matthew.t.hoare@gmail.com>           #
+# Copyright: 2020-2021 Matthew T Hoare <matthew.t.hoare@gmail.com>      #
 #                                                                       #
 # This program is free software: you can redistribute it and/or modify  #
 # it under the terms of the GNU General Public License as published by  #
@@ -26,7 +26,7 @@
 
 readonly USER="$USER"
 readonly HOME="$HOME"
-readonly version='10.6.0'
+readonly version='10.8.0'
 readonly name="${0##*/}"
 readonly backup_suffix="${backup_suffix:-~$( date +%F@%T )}"
 readonly sharp_skel="${sharp_skel:-/usr/share/sharpbang/skel/}"
@@ -75,35 +75,12 @@ usage_error ()
 
 refresh_confirm ()
 {
-   cat << END
-
-New versions of files in ${sharp_skel} will be 
-copied into ${HOME}, overwriting files there.
-
-Any overwritten files will be backed up with a suffix of ${backup_suffix}.
-
-If you have already made many changes to your desktop it would
-be better to check ${sharp_skel} and copy in any 
-new settings to ${HOME} by hand.
-
-Do you want to continue? [y/n]
-
-END
-   IFS= read -r reply
-   case "$reply" in
-      Y|y|YES|Yes|yes)
-         sharp_setup_run='yes'
-         ;;
-      N|n|NO|No|no)
-         echo "Action aborted, no files copied."
-         exit 0
-         ;;
-      *)
-         # shellcheck disable=SC2027 disable=SC2086
-         echo "${name}: unrecognised option '"$reply"'" >&2
-         exit 64
-         ;;
-   esac
+	if whiptail --yesno "New versions of files in ${sharp_skel} will\nbe copied into ${HOME}, overwriting files there.\n\nAny overwritten files will be backed up with a suffix of\n${backup_suffix}\n\nIf you have already made many changes to your desktop it\nwould be better to check ${sharp_skel} and\ncopy in any new settings to ${HOME} by hand.\n\nDo you want to continue?" 0 0 ; then
+		sharp_setup_run='yes'
+	else
+		echo "Action aborted, no files copied."
+		exit 0
+	fi
 }
 
 safety_checks ()
